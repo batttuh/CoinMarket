@@ -41,7 +41,7 @@ public class UIMenu extends javax.swing.JFrame {
         jScrollPane1.setBackground(new Color(0,0,0,50));
         Map<String,Integer> coinsTable=CoinMarket.trader.getSpotWallet();
         for(Map.Entry<String, Integer> entry : coinsTable.entrySet()){
-            jComboBox1.addItem(entry.getKey());
+            transferCoinsBox.addItem(entry.getKey());
         }
         transferMessage.setVisible(false);    
     }
@@ -82,7 +82,7 @@ public class UIMenu extends javax.swing.JFrame {
         walletAdress = new javax.swing.JTextField();
         verifyTransaction = new javax.swing.JButton();
         transferMessage = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        transferCoinsBox = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -117,7 +117,6 @@ public class UIMenu extends javax.swing.JFrame {
         jScrollPane1.setOpaque(false);
 
         jTable1.setBackground(new java.awt.Color(153, 153, 153));
-        jTable1.setForeground(new java.awt.Color(0, 0, 0));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -273,7 +272,6 @@ public class UIMenu extends javax.swing.JFrame {
         }
 
         jButton2.setBackground(new java.awt.Color(243, 210, 80));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Deposit Money");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -351,7 +349,6 @@ public class UIMenu extends javax.swing.JFrame {
         walletAdress.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         verifyTransaction.setBackground(new java.awt.Color(243, 210, 80));
-        verifyTransaction.setForeground(new java.awt.Color(0, 0, 0));
         verifyTransaction.setText("Verify");
         verifyTransaction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,6 +359,12 @@ public class UIMenu extends javax.swing.JFrame {
         transferMessage.setBackground(new java.awt.Color(0, 0, 0));
         transferMessage.setFont(new java.awt.Font("Arial", 2, 18)); // NOI18N
         transferMessage.setText("Transfer is succesfull");
+
+        transferCoinsBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                transferCoinsBoxMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout TransferPanelLayout = new javax.swing.GroupLayout(TransferPanel);
         TransferPanel.setLayout(TransferPanelLayout);
@@ -378,7 +381,7 @@ public class UIMenu extends javax.swing.JFrame {
                 .addGroup(TransferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(coinAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(transferCoinsBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 216, Short.MAX_VALUE)
                 .addGroup(TransferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TransferPanelLayout.createSequentialGroup()
@@ -402,7 +405,7 @@ public class UIMenu extends javax.swing.JFrame {
                         .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TransferPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(transferCoinsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
@@ -566,8 +569,8 @@ public class UIMenu extends javax.swing.JFrame {
      
         transferMessage.setVisible(true);
        try{
-            if(CoinMarket.trader.getSpotWallet().get(jComboBox1.getSelectedItem().toString())>=Integer.parseInt(coinAmount.getText())){
-            if(CoinMarket.trader.sendCoin(jComboBox1.getSelectedItem().toString(), Integer.parseInt(coinAmount.getText()), walletAdress.getText())){
+            if(CoinMarket.trader.getSpotWallet().get(transferCoinsBox.getSelectedItem().toString())>=Integer.parseInt(coinAmount.getText())){
+            if(CoinMarket.trader.sendCoin(transferCoinsBox.getSelectedItem().toString(), Integer.parseInt(coinAmount.getText()), walletAdress.getText())){
                 transferMessage.setText("Transfer is succesfull");
                 transferMessage.setForeground(Color.green);
             }else{
@@ -591,6 +594,10 @@ public class UIMenu extends javax.swing.JFrame {
         
 
     }//GEN-LAST:event_verifyTransactionActionPerformed
+
+    private void transferCoinsBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transferCoinsBoxMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_transferCoinsBoxMouseClicked
     private void creatingTable(){
         Map<String,Coins> coinsTable=new HashMap<String, Coins>();
         DefaultTableModel model1=(DefaultTableModel)jTable1.getModel();    
@@ -649,7 +656,6 @@ public class UIMenu extends javax.swing.JFrame {
     private javax.swing.JTextField coinAmount;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    public static javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -679,6 +685,7 @@ public class UIMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable5;
+    public static javax.swing.JComboBox<String> transferCoinsBox;
     private javax.swing.JLabel transferMessage;
     private javax.swing.JButton verifyTransaction;
     private javax.swing.JTextField walletAdress;

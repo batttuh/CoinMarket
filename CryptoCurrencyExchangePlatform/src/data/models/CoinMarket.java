@@ -40,19 +40,18 @@ public class CoinMarket implements IEntrance{
     public static double getCoinPrice(String coinName){
         return prices.get(coinName).getPrice();
     }
-    void setTrader(Trader trader){
-        this.trader = trader;
-    }
-    
+   
     public static void setPrices(Map<String, Coins> prices){
         CoinMarket.prices = prices;
         
     }
     public static Map<String, Coins> getPrices(){
-  
-  
         return prices;
     }
+     void setTrader(Trader trader){
+        this.trader = trader;
+    }
+    
     public boolean checkIfEmailExist(String iEmail){
           try {
             File file = new File("users.txt");

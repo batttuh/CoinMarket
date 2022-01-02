@@ -54,7 +54,7 @@ public class Trader extends User implements IWallet {
     public boolean addCoinToWallet(String coin_name, int amount) {
         fiat-=CoinMarket.getCoinPrice(coin_name)*amount;
         if(!wallet.containsKey(coin_name)){
-            UIMenu.jComboBox1.addItem(coin_name);
+            UIMenu.transferCoinsBox.addItem(coin_name);
         } 
         
         if(wallet.get(coin_name)!=null){
