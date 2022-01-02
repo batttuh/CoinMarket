@@ -5,7 +5,7 @@
 package UI;
 
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import data.models.Trader;
 import data.repo.CoinMarketDatabase;
 import java.awt.event.KeyAdapter;
@@ -24,6 +24,7 @@ public class UICoinBuy extends javax.swing.JFrame {
      */
     private String coinName;
     private double coinPrice;
+    CoinMarket coinMarket = new CoinMarket();
     public UICoinBuy(String coinName, double coinPrice) {
         initComponents();
         this.coinName=coinName;
@@ -31,7 +32,7 @@ public class UICoinBuy extends javax.swing.JFrame {
         jLabel6.setText(Double.toString(this.coinPrice));
         jLabel1.setText(this.coinName);
         jLabel4.setVisible(false);
-        Map<String,Integer> amountMap=CoinMarket.trader.getSpotWallet();
+        Map<String,Integer> amountMap=coinMarket.getTrader().getSpotWallet();
         if(amountMap.get(coinName)!=null){
             coinAmount.setText(amountMap.get(coinName).toString());
         }else{
@@ -218,11 +219,11 @@ public class UICoinBuy extends javax.swing.JFrame {
     private void BuyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyButtonActionPerformed
         // TODO add your handling code here:
         try{
-        if(Double.parseDouble(jLabel7.getText())<=CoinMarket.trader.getFiat()){ 
+        if(Double.parseDouble(jLabel7.getText())<=coinMarket.getTrader().getFiat()){ 
             
-              CoinMarket.trader.addCoinToWallet(jLabel1.getText(), Integer.parseInt(jTextField1.getText()));
+              coinMarket.getTrader().addCoinToWallet(jLabel1.getText(), Integer.parseInt(jTextField1.getText()));
             JOptionPane.showMessageDialog(this, "Succesfully");
-            coinAmount.setText(Integer.toString(CoinMarket.trader.getSpotWallet().get(coinName)));
+            coinAmount.setText(Integer.toString(coinMarket.getTrader().getSpotWallet().get(coinName)));
             jTextField1.setText("");
         }else{
             JOptionPane.showMessageDialog(this, "Not enough money");
@@ -235,12 +236,12 @@ public class UICoinBuy extends javax.swing.JFrame {
     private void SellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellButtonActionPerformed
         // TODO add your handling code here:
         try{
-            if(Integer.parseInt(jTextField1.getText())<=CoinMarket.trader.getSpotWallet().get(jLabel1.getText())){
+            if(Integer.parseInt(jTextField1.getText())<=coinMarket.getTrader().getSpotWallet().get(jLabel1.getText())){
     
-                if(!CoinMarket.trader.sellCoin(jLabel1.getText(), Integer.parseInt(jTextField1.getText()))){
+                if(!coinMarket.getTrader().sellCoin(jLabel1.getText(), Integer.parseInt(jTextField1.getText()))){
                     coinAmount.setText("0");
                 }else{
-                    coinAmount.setText(Integer.toString(CoinMarket.trader.getSpotWallet().get(coinName)));
+                    coinAmount.setText(Integer.toString(coinMarket.getTrader().getSpotWallet().get(coinName)));
                 }
                 
                 jTextField1.setText("");

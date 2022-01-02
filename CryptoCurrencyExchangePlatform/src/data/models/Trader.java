@@ -18,7 +18,8 @@ public class Trader extends User implements IWallet {
    private String wallet_address = "SOME ID";
    private Map<String, Integer> wallet = new HashMap<>();
    private double fiat = 0; // Kullanıcı yükleme yapacağı zaman bura artacak, ama aslında fiatı yok yanlış yapıyoz 0 olmalı şimdi aynen benim hatam farkettim
-    public Trader(String email, String wallet_address, Map<String, Integer> wallet, double fiat) {
+   CoinMarket coinMarket = new CoinMarket();
+   public Trader(String email, String wallet_address, Map<String, Integer> wallet, double fiat) {
         super(email);
         this.wallet_address = wallet_address;
         this.wallet=wallet;
@@ -52,7 +53,7 @@ public class Trader extends User implements IWallet {
 
     @Override
     public boolean addCoinToWallet(String coin_name, int amount) {
-        fiat-=CoinMarket.getCoinPrice(coin_name)*amount;
+        fiat-=coinMarket.getPrices().get(coin_name).getPrice()*amount;
         if(!wallet.containsKey(coin_name)){
             UIMenu.transferCoinsBox.addItem(coin_name);
         } 
@@ -74,9 +75,8 @@ public class Trader extends User implements IWallet {
     }
 
     @Override
-    public boolean sellCoin(String coin_name,int amount) {
-        
-        fiat+=CoinMarket.getCoinPrice(coin_name)*amount;
+    public boolean sellCoin(String coin_name,int amount) {        
+        fiat+=wallet.get(coin_name)*amount;
         int newAmount=wallet.get(coin_name)-amount;
         CoinMarketDatabase coinMarketDatabase=new CoinMarketDatabase();
         coinMarketDatabase.update(coin_name, newAmount, wallet_address, fiat);

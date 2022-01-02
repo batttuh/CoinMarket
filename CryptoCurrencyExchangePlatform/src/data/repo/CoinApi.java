@@ -1,8 +1,9 @@
 package data.repo;
 
 
+import data.models.ApiFunctions;
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
@@ -32,34 +33,33 @@ import org.json.simple.JSONValue;
  *
  * @author PC
  */
-public class CoinApi {
+public class CoinApi implements ApiFunctions {
     private final static String apiKey = "549e66f1-54ee-4963-8525-a50b44cfea72";
     private static int Number=0;
     private static String uri = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
     private static List<NameValuePair> paratmers = new ArrayList<NameValuePair>();
-
-    public static void takenApiValues(){
+    @Override
+    public Map<String, Coin> fetchApiValues(){
         if(Number==0){
             paratmers.add(new BasicNameValuePair("start","1"));
              paratmers.add(new BasicNameValuePair("limit","20"));
              paratmers.add(new BasicNameValuePair("convert","USD"));
              Number++;
         }
-    
     try {
         
-        String result = makeAPICall(uri, paratmers);
-        parseString(result);
+       String result = makeApiCall(uri, paratmers);
+       return parseString(result);
       //System.out.println(result);
     } catch (IOException e) {
       System.out.println("Error: cannont access content - " + e.toString());
     } catch (URISyntaxException e) {
       System.out.println("Error: Invalid URL " + e.toString());
     }
-    
-    }
-    
-    public static String makeAPICall(String uri, List<NameValuePair> parameters)
+    return null;
+   }
+    @Override
+    public String makeApiCall(String uri, List<NameValuePair> parameters)
       throws URISyntaxException, IOException {
     String response_content = "";
 
@@ -86,8 +86,8 @@ public class CoinApi {
 
     return response_content;
   }
-    public static void parseString(String result) {
-        Map<String,Coins> coinPrices=new HashMap();   
+    public Map<String, Coin>  parseString(String result) {
+        Map<String,Coin> coinPrices=new HashMap();   
         JSONObject obj=(JSONObject) JSONValue.parse(result); 
         JSONArray data=(JSONArray) obj.get("data");
         for(int i=0;i<data.size();i++){
@@ -95,10 +95,11 @@ public class CoinApi {
         JSONObject quote=(JSONObject) jsonb.get("quote");
         JSONObject USD=(JSONObject) quote.get("USD");
         
-        Coins coins=new Coins((double) USD.get("price"),(double) USD.get("percent_change_24h"),(double) USD.get("volume_24h"),(double) USD.get("market_cap")); 
+        Coin coins=new Coin((double) USD.get("price"),(double) USD.get("percent_change_24h"),(double) USD.get("volume_24h"),(double) USD.get("market_cap")); 
         coinPrices.put((String) jsonb.get("symbol"), coins);
         } 
-        CoinMarket.setPrices(coinPrices);
         System.gc();
+        return coinPrices;
+       
     }  
 }

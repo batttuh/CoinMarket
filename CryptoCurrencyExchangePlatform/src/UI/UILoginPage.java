@@ -2,7 +2,7 @@ package UI;
 
 
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import data.models.Trader;
 import data.repo.CoinMarketDatabase;
 import java.awt.Color;
@@ -41,7 +41,7 @@ public class UILoginPage extends javax.swing.JFrame {
          JFrame(this);
          jPanel4.setVisible(false);
          jLabel14.setVisible(false);
-         Map<String,Coins> coinsTable=new HashMap<String, Coins>();
+         Map<String,Coin> coinsTable=new HashMap<String, Coin>();
          CoinMarket coinMarket=new CoinMarket();
          coinMarket.refreshCoins();
          coinsTable=coinMarket.getPrices();

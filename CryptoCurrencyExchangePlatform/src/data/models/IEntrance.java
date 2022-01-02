@@ -11,5 +11,6 @@ package data.models;
 public interface IEntrance {
     void signUp(String email, String password);
     boolean signIn(String email, String password);
+    boolean checkIfEmailExist(String email);
     boolean logOut();
 }

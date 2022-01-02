@@ -26,32 +26,25 @@ import javax.swing.JFrame;
  * @author hasan
  */
 public class CoinMarket implements IEntrance{
-    public static Trader trader;
-    static Map<String, Coins> prices = new HashMap<>(); // DATA FROM API WILL BE STORED HERE
+    public Trader trader;
+    private static Map<String, Coin> prices = new HashMap<>(); // DATA FROM API WILL BE STORED HERE
     CoinMarketDatabase coinMarketDatabase = new CoinMarketDatabase();
-    
-    Trader getTrader(Trader trader){
+    CoinApi coinApi=new CoinApi();
+    public Trader getTrader(){
         return trader;  
     }
-    public static void refreshCoins(){
+    public void refreshCoins(){
+        setPrices(coinApi.fetchApiValues());
+    }  
+    public void setPrices(Map<String, Coin> prices){
         CoinApi coinApi=new CoinApi();
-        coinApi.takenApiValues();
+       prices = coinApi.fetchApiValues(); 
     }
-    public static double getCoinPrice(String coinName){
-        return prices.get(coinName).getPrice();
-    }
-   
-    public static void setPrices(Map<String, Coins> prices){
-        CoinMarket.prices = prices;
-        
-    }
-    public static Map<String, Coins> getPrices(){
+    public Map<String, Coin> getPrices(){
         return prices;
     }
-     void setTrader(Trader trader){
-        this.trader = trader;
-    }
-    
+     
+    @Override
     public boolean checkIfEmailExist(String iEmail){
           try {
             File file = new File("users.txt");
@@ -71,7 +64,6 @@ public class CoinMarket implements IEntrance{
            ex.printStackTrace();
         }
         return false;
-    
     }
     
     @Override

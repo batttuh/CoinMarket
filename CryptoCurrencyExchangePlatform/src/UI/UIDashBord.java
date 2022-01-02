@@ -2,7 +2,7 @@ package UI;
 
 
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import data.models.Trader;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -32,12 +32,14 @@ public class UIDashBord extends javax.swing.JFrame {
      * Creates new form UIDashBord
      */
     private double estimatedValue=0;
+    CoinMarket coinMarket;
     public UIDashBord() {
         initComponents();
+        coinMarket = new CoinMarket();
         jLabel1.setText(Trader.email);
         jLabel7.setText(Trader.email.charAt(0)+""+Trader.email.charAt(1));
-        jLabel3.setText(CoinMarket.trader.getWalletAddress());
-        jLabel10.setText(Double.toString(CoinMarket.trader.getFiat()));
+        jLabel3.setText(coinMarket.getTrader().getWalletAddress());
+        jLabel10.setText(Double.toString(coinMarket.getTrader().getFiat()));
         createTable();
         jLabel6.setText(Double.toString(estimatedValue));
   }
@@ -253,7 +255,7 @@ public class UIDashBord extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         createTable();
-        jLabel10.setText(Double.toString(CoinMarket.trader.getFiat()));
+        jLabel10.setText(Double.toString(coinMarket.getTrader().getFiat()));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -315,19 +317,19 @@ public class UIDashBord extends javax.swing.JFrame {
         estimatedValue=0;
         DefaultTableModel model1=(DefaultTableModel)jTable1.getModel();    
         model1.setRowCount(0);
-        Map<String,Integer> coins= CoinMarket.trader.getSpotWallet();
+        Map<String,Integer> coins= coinMarket.getTrader().getSpotWallet();
         CoinMarket coinMarket=new CoinMarket();
         coinMarket.refreshCoins();
         for(Map.Entry<String, Integer> entry : coins.entrySet()) {
         String key = entry.getKey();
         int amount = entry.getValue();
-        estimatedValue+=coinMarket.getCoinPrice(key)*amount; //!!!!!!!
+        estimatedValue+=coinMarket.getTrader().getSpotWallet().get(key)*amount; //!!!!!!!
         
-            model1.addRow(new Object[]{key,amount,coinMarket.getCoinPrice(key)});
+            model1.addRow(new Object[]{key,amount,coinMarket.getPrices().get(key).getPrice()});
         
        }// kullanıcı giriş check ve para yatırma kaldı ve  yanlış şifre, yanlış mail check i var ama
        //neler? yok galiba
-       estimatedValue+=CoinMarket.trader.getFiat();
+       estimatedValue+=coinMarket.getTrader().getFiat();
     }
 
   

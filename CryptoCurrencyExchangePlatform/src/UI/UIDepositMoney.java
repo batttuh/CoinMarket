@@ -19,6 +19,7 @@ public class UIDepositMoney extends javax.swing.JFrame {
     /**
      * Creates new form UIDepositMoney
      */
+    CoinMarket coinMarket = new CoinMarket();
     public UIDepositMoney() {
         initComponents();
     }
@@ -177,8 +178,8 @@ public class UIDepositMoney extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         CoinMarketDatabase coinMarketDatabase=new CoinMarketDatabase();
-        coinMarketDatabase.updateFiat(CoinMarket.trader.getWalletAddress(), Double.parseDouble(jTextField1.getText()));
-        System.out.println(CoinMarket.trader.getFiat());
+        coinMarketDatabase.updateFiat(coinMarket.getTrader().getWalletAddress(),Double.parseDouble(jTextField1.getText()));
+     
         JOptionPane.showMessageDialog(this, "Succesfully");
         
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -1,7 +1,7 @@
 package UI;
 
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import data.models.Trader;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class UIMenu extends javax.swing.JFrame {
         transferMessage.setVisible(false);
         jTable1.setBackground(new Color(0,0,0,50));
         jScrollPane1.setBackground(new Color(0,0,0,50));
-        Map<String,Integer> coinsTable=CoinMarket.trader.getSpotWallet();
+        Map<String,Integer> coinsTable=coinMarket.getTrader().getSpotWallet();
         for(Map.Entry<String, Integer> entry : coinsTable.entrySet()){
             transferCoinsBox.addItem(entry.getKey());
         }
@@ -569,8 +569,8 @@ public class UIMenu extends javax.swing.JFrame {
      
         transferMessage.setVisible(true);
        try{
-            if(CoinMarket.trader.getSpotWallet().get(transferCoinsBox.getSelectedItem().toString())>=Integer.parseInt(coinAmount.getText())){
-            if(CoinMarket.trader.sendCoin(transferCoinsBox.getSelectedItem().toString(), Integer.parseInt(coinAmount.getText()), walletAdress.getText())){
+            if(coinMarket.getTrader().getSpotWallet().get(transferCoinsBox.getSelectedItem().toString())>=Integer.parseInt(coinAmount.getText())){
+            if(coinMarket.getTrader().sendCoin(transferCoinsBox.getSelectedItem().toString(), Integer.parseInt(coinAmount.getText()), walletAdress.getText())){
                 transferMessage.setText("Transfer is succesfull");
                 transferMessage.setForeground(Color.green);
             }else{
@@ -599,15 +599,15 @@ public class UIMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_transferCoinsBoxMouseClicked
     private void creatingTable(){
-        Map<String,Coins> coinsTable=new HashMap<String, Coins>();
+        Map<String,Coin> coinsTable=new HashMap<String, Coin>();
         DefaultTableModel model1=(DefaultTableModel)jTable1.getModel();    
         model1.setRowCount(0);
         CoinMarket coinMarket=new CoinMarket();
         coinMarket.refreshCoins();
         coinsTable=coinMarket.getPrices();
-        for(Map.Entry<String, Coins> entry : coinsTable.entrySet()) {
+        for(Map.Entry<String, Coin> entry : coinsTable.entrySet()) {
         String key = entry.getKey();
-        Coins coins = entry.getValue();
+        Coin coins = entry.getValue();
         model1.addRow(new Object[]{key,coins.getPrice(),coins.getChanges(),coins.getVolume(),coins.getCapacity()});
     
     }

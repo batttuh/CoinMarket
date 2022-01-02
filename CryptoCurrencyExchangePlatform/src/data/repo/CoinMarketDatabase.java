@@ -5,7 +5,7 @@
 package data.repo;
 
 import data.models.CoinMarket;
-import data.models.Coins;
+import data.models.Coin;
 import data.models.Trader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class CoinMarketDatabase {
     private static final String url="jdbc:sqlite:C:/sqlite/CoinMarket.db";
+    CoinMarket coinMarket = new CoinMarket();
     public static void createNewDatabase(String fileName) {        
         try {  
             Connection conn = DriverManager.getConnection(url);  
@@ -103,7 +104,7 @@ public class CoinMarketDatabase {
         }
     }
      public void updateFiat(String userId,double takenFiat){
-         double fiat=CoinMarket.trader.getFiat()+takenFiat;
+         double fiat=coinMarket.getTrader().getFiat()+takenFiat;
          String sql = "UPDATE Ledger SET fiat = ?"
                 + "WHERE userId = ?";
          try (Connection conn = this.connect();
@@ -111,7 +112,7 @@ public class CoinMarketDatabase {
             // set the corresponding param
             pstmt.setDouble(1, fiat);
             pstmt.setString(2, userId);
-            CoinMarket.trader.setFiat(fiat);
+            coinMarket.getTrader().setFiat(fiat);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -199,13 +200,13 @@ public class CoinMarketDatabase {
         }
     }
      private static String sqlCodeGeneraterForCoins(){
-             Map<String,Coins> coinsTable=new HashMap<String, Coins>();
+             Map<String,Coin> coinsTable=new HashMap<String, Coin>();
         CoinMarket coinMarket=new CoinMarket();
         coinMarket.refreshCoins();
         coinsTable=coinMarket.getPrices();
         ArrayList<String> coinNames = new ArrayList<String>();
         String sqlCode = "";
-        for(Map.Entry<String, Coins> entry : coinsTable.entrySet()){
+        for(Map.Entry<String, Coin> entry : coinsTable.entrySet()){
             System.out.println(entry.getKey());
             String sqlCommand = ","+entry.getKey() + " INTEGER DEFAULT 0"; 
             
@@ -216,9 +217,9 @@ public class CoinMarketDatabase {
      private Map<String, Integer> sqlCodeGenerateToSelectCoins(ResultSet rs) throws SQLException{
             CoinMarket coinMarket=new CoinMarket();
             coinMarket.refreshCoins();
-            Map<String,Coins> coinsTable=coinMarket.getPrices();
+            Map<String,Coin> coinsTable=coinMarket.getPrices();
             Map<String, Integer> spotWallet = new HashMap<>();
-        for(Map.Entry<String, Coins> entry : coinsTable.entrySet()){
+        for(Map.Entry<String, Coin> entry : coinsTable.entrySet()){
             System.out.println(entry.getKey());
             System.out.println(rs.getDouble(entry.getKey()));
             if(rs.getInt(entry.getKey())!=0){
