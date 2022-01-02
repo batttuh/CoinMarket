@@ -24,6 +24,10 @@ public class Trader extends User implements IWallet {
         this.wallet=wallet;
         this.fiat=fiat;
     }
+    public Trader(String email, String wallet_address){
+        super(email);
+        this.wallet_address = wallet_address;
+    }
     
     @Override
     public String getWalletAddress(){

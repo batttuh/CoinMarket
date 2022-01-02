@@ -9,7 +9,7 @@ package data.models;
  * @author hasan
  */
 public interface IEntrance {
-    String signUp(String email, String password);
-    String signIn(String email, String password);
+    void signUp(String email, String password);
+    boolean signIn(String email, String password);
     boolean logOut();
 }

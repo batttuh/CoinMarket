@@ -459,10 +459,9 @@ public class UILoginPage extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         CoinMarket coinMarket=new CoinMarket();
-        String userId=coinMarket.signIn(jTextField1.getText(),jPasswordField1.getText());
+        
         CoinMarketDatabase coinMarketDatabase=new CoinMarketDatabase();
-        if(userId!=null){
-        CoinMarket.trader = coinMarketDatabase.callUser(userId, jTextField1.getText());
+        if(coinMarket.signIn(jTextField1.getText(), jPasswordField1.getText())){
         UIMenu uıIMenu=new UIMenu();
         uıIMenu.setVisible(true);
         this.setVisible(false);
@@ -480,16 +479,12 @@ public class UILoginPage extends javax.swing.JFrame {
                 CoinMarket coinMarketSystem = new CoinMarket();
                 if(!coinMarketSystem.checkIfEmailExist(registerEmailTextField.getText())){
                     if(jCheckBox1.isSelected()){
-                        String userID=coinMarketSystem.signUp(registerEmailTextField.getText(), registerPasswordTextField.getText());
-                        CoinMarketDatabase coinMarketDatabase=new CoinMarketDatabase();
-                        coinMarketDatabase.insert(userID);
+                       CoinMarket coinMarket = new CoinMarket();
+                       coinMarket.signUp(registerEmailTextField.getText(), registerPasswordTextField.getText());
                     }
                     else{
                         JOptionPane.showMessageDialog(this, "Please accept the terms");
                     }
-                    // SİGN UP
-                    
-                    //testt
                     
                 }else{
                     JOptionPane.showMessageDialog(this, "This users has account");

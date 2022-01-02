@@ -68,7 +68,7 @@ public class CoinMarketDatabase {
         return conn;  
     }
     // INSERT WHEN USER IS REGISTERED
-    public void insert(String userId) {  
+    public Trader insertUser(String email, String userId) {  
           String sql = "INSERT INTO Ledger(userId) VALUES(?)";
         try{  
             Connection conn = this.connect();  
@@ -77,9 +77,12 @@ public class CoinMarketDatabase {
             pstmt.executeUpdate();
             //Trader.wallet_address = userId;
             //Trader.email = userId; // ayno aslında modifiye edecez
-            System.out.println(userId+" is added");
+                System.out.println(userId+" is added");
+            Trader newTrader = new Trader(email, userId);
+            return newTrader;
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
+            return null;
         }  
     }
     

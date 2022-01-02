@@ -6,6 +6,7 @@ package data.models;
 
 
 import data.repo.CoinApi;
+import data.repo.CoinMarketDatabase;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +28,7 @@ import javax.swing.JFrame;
 public class CoinMarket implements IEntrance{
     public static Trader trader;
     static Map<String, Coins> prices = new HashMap<>(); // DATA FROM API WILL BE STORED HERE
-    
+    CoinMarketDatabase coinMarketDatabase = new CoinMarketDatabase();
     
     Trader getTrader(Trader trader){
         return trader;  
@@ -61,7 +62,6 @@ public class CoinMarket implements IEntrance{
                 String email = input.next();
                 if(email.matches(iEmail)){
                     String userId;
-                    
                     return true;
                     //fetch data by id
                 }else{
@@ -76,33 +76,33 @@ public class CoinMarket implements IEntrance{
     }
     
     @Override
-    public String signUp(String İEmail, String iPassword) {
+    public void signUp(String IEmail, String iPassword) {
          try {
-            System.out.println(İEmail);
+            System.out.println(IEmail);
             System.out.println(iPassword);
             FileWriter fileWriter = new FileWriter("users.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            if(!checkIfEmailExist(İEmail)){
-            String userId = İEmail + iPassword + "blabla"; // THIS REQUIRES SOME PACKAGES
-            bufferedWriter.write(İEmail + " " + iPassword + " " + userId);
+            if(!checkIfEmailExist(IEmail)){
+            String userId = IEmail + iPassword + "blabla"; // THIS REQUIRES SOME PACKAGES
+            bufferedWriter.write(IEmail + " " + iPassword + " " + userId);
             bufferedWriter.newLine();
             bufferedWriter.close();
-            return userId;
+            trader = new Trader(IEmail, userId);
+            CoinMarketDatabase database = new CoinMarketDatabase();
+            database.insertUser(IEmail, userId);
             }else{
-                return null;
+                System.out.println("User has alread an account");
             }
       
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-       return "id";
-       
     }
        
     
                 
     @Override
-    public String signIn(String iEmail, String iPassword) {
+    public boolean signIn(String iEmail, String iPassword) {
           try {
             File file = new File("users.txt");
             Scanner input = new Scanner(file);
@@ -112,17 +112,18 @@ public class CoinMarket implements IEntrance{
                 String password = input.next();
                 if(email.matches(iEmail) && password.matches(iPassword)){
                     String userId;
-                    userId = input.next();
-                    return userId;
-                    //fetch data by id
+                    userId = input.next(); 
+                    trader = coinMarketDatabase.callUser(userId, iEmail);
+                    return true;
                 }else{
                     input.next();
                 }
-            }            
+            }
+            
         } catch (FileNotFoundException ex) {
            ex.printStackTrace();
         }
-        return null;
+         return false;
     }
 
     @Override
