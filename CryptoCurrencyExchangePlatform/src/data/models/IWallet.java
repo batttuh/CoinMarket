@@ -17,6 +17,8 @@ interface IWallet {
     boolean addCoinToWallet(String coin_name, int amount);
     boolean sellCoin(String coin_name, int amount);
     double getFiat();
+    void setFiat(double newFiat);
+    void setWallet(Map<String, Integer> wallet);
     String getWalletAddress();
   
     }

@@ -24,9 +24,14 @@ public class Trader extends User implements IWallet {
         this.wallet=wallet;
         this.fiat=fiat;
     }
+    
     @Override
     public String getWalletAddress(){
         return wallet_address;
+    }
+    @Override
+    public void setFiat(double newFiat){
+        this.fiat = newFiat;
     }
     @Override
     public double getFiat(){
@@ -35,6 +40,10 @@ public class Trader extends User implements IWallet {
     @Override
     public Map<String, Integer> getSpotWallet() { // lan ne oluyoır ammk
         return wallet;
+    }
+    @Override
+    public void setWallet(Map<String, Integer> wallet){
+        this.wallet = wallet;
     }
 
     @Override

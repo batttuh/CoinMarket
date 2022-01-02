@@ -7,7 +7,6 @@ package data.repo;
 import data.models.CoinMarket;
 import data.models.Coins;
 import data.models.Trader;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -101,7 +100,7 @@ public class CoinMarketDatabase {
         }
     }
      public void updateFiat(String userId,double takenFiat){
-         double fiat=Trader.fiat+takenFiat;
+         double fiat=CoinMarket.trader.getFiat()+takenFiat;
          String sql = "UPDATE Ledger SET fiat = ?"
                 + "WHERE userId = ?";
          try (Connection conn = this.connect();
@@ -109,8 +108,8 @@ public class CoinMarketDatabase {
             // set the corresponding param
             pstmt.setDouble(1, fiat);
             pstmt.setString(2, userId);
-            Trader.fiat = fiat;
-            System.out.println("Updated");
+            CoinMarket.trader.setFiat(fiat);
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -167,7 +166,7 @@ public class CoinMarketDatabase {
             
             // set the value
            pstmt.setString(1,userId);
-           Trader.wallet_address=userId;
+          
             //
            ResultSet rs  = pstmt.executeQuery();
             // loop through the result set
@@ -185,7 +184,7 @@ public class CoinMarketDatabase {
             
             // set the value
            pstmt.setString(1,userId);
-           Trader.wallet_address=userId;
+         
             //
            ResultSet rs  = pstmt.executeQuery();
             // loop through the result set
