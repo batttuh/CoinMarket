@@ -1,10 +1,1 @@
-  blabla
-ss 12 ss12blabla
- 12 12blabla
-batttuh 1234 batttuh1234blabla
-batu 123 batu123blabla
-bat 123 bat123blabla
-batuh 12 batuh12blabla
 ha 1 ha1blabla
-h 1 h1blabla
-haa 1 haa1blabla
